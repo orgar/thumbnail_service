@@ -46,8 +46,8 @@ rails s
 bundle exec rspec
 ```
 
-### what not implemented?
+### What not implemented yet?
 * logger
 * tests are partial no mock or stubs implemented
 * task for clean the images that created locally
-* cache for using the same images again
+* cache for using the same images again(for bigger scale)
