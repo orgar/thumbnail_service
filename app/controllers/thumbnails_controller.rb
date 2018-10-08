@@ -2,7 +2,7 @@ require "open-uri"
 require 'mini_magick'
 require 'fileutils'
 
-class ThumbnailController < ApplicationController
+class ThumbnailsController < ApplicationController
   BACKGROUND_COLOR = 'black'
 
 # TODO to add comments
@@ -10,13 +10,14 @@ class ThumbnailController < ApplicationController
   # GET /thumbnail
   def ipad_thumbnail
 
-    validation_ans = validate_params
+    validation_ans = validate_params params
     return render json: {message: validation_ans}, status: 400 if validation_ans
 
     # TODO its double do I want this for the returned code ? probebly not
     download = download_file params[:url]
     if download[:exception]
       render json: { message: "Fail to download file from url. #{download[:exception].message}", backtrace: download[:exception].backtrace}, status: 400
+      return
     end
 
     begin
@@ -60,10 +61,10 @@ class ThumbnailController < ApplicationController
     return wanted.to_f / original.to_f
   end
 
-  def validate_params
-    return "Missing one of the following parameters: url, width, height" unless params[:url] && params[:width] && params[:height]
-    return "Width is invalid" if !/\A\d+\z/.match(params[:width])
-    return "Height is invalid" if !/\A\d+\z/.match(params[:height])
+  def validate_params opts
+    return "Missing one of the following parameters: url, width, height" unless opts[:url] && opts[:width] && opts[:height]
+    return "Width is invalid" if !/\A\d+\z/.match(opts[:width])
+    return "Height is invalid" if !/\A\d+\z/.match(opts[:height])
   end
 
 # TODO maybe give the filename
