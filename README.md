@@ -2,7 +2,7 @@
 
 ### So what this code do?
 The service should fetch the image located at the given url and return a resized version
-(based on the given dimensions) in JPEG format.
+(based on the given dimensions) in JPEG format.<br />
 The image is scaled down to fill the given width and height while retaining the
 original aspect ratio and with all of the original image visible. If the requested
 dimensions are bigger than the original images, the image doesn’t scale up. If
@@ -12,16 +12,16 @@ black padding is added to the image to reach the required size.
 ### Examples
 Given the following image (250x167) located at http://www.example.com/sample.jpg:
 
-No padding (on dimensions with similar aspect ratio as original’s):
+No padding (on dimensions with similar aspect ratio as original’s):<br />
 GET /thumbnail?url=http://www.example.com/sample.jpg&amp;width=200&amp;height=134
 
-Top + bottom padding:
+Top + bottom padding:<br />
 GET /thumbnail?url=http://www.example.com/sample.jpg&amp;width=200&amp;height=200
 
-Left + right padding:
+Left + right padding:<br />
 GET /thumbnail?url=http://www.example.com/sample.jpg&amp;width=300&amp;height=134
 
-Left + right + top + bottom padding (requested dims are larger than original image’s):
+Left + right + top + bottom padding (requested dims are larger than original image’s):<br />
 GET /thumbnail?url=http://www.example.com/sample.jpg&amp;width=300&amp;height=300
 
 ### Ruby version
