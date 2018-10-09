@@ -32,6 +32,7 @@ Git, Ruby(2.4.1) and ImageMagick or GraphicsMagick
 
 ### Installation:
 ```
+# rvm use 2.4.1
 gem install bundle
 bundle
 ```
