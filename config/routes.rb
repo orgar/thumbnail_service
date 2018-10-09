@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
+  # Routing to validate the server is alive
+  root :to => 'thumbnails#is_alive'
+  get 'active', to: 'thumbnails#is_alive'
+
+  # get thumbnail 
   get 'thumbnail', to: 'thumbnails#ipad_thumbnail' , as: :thumbnail
 end

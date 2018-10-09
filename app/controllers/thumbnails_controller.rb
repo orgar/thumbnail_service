@@ -1,6 +1,6 @@
-require "open-uri"
+# require "open-uri"
 require 'mini_magick'
-require 'fileutils'
+# require 'fileutils'
 
 class ThumbnailsController < ApplicationController
   BACKGROUND_COLOR = 'black'
@@ -14,15 +14,15 @@ class ThumbnailsController < ApplicationController
     return render json: {message: validation_ans}, status: 400 if validation_ans
 
     # TODO its double do I want this for the returned code ? probebly not
-    download = download_file params[:url]
-    if download[:exception]
-      render json: { message: "Fail to download file from url. #{download[:exception].message}", backtrace: download[:exception].backtrace}, status: 400
-      return
-    end
+    # download = download_file params[:url]
+    # if download[:exception]
+    #   render json: { message: "Fail to download file from url. #{download[:exception].message}", backtrace: download[:exception].backtrace}, status: 400
+    #   return
+    # end
 
     begin
-      image =  MiniMagick::Image.open(download[:filename])
-      FileUtils.rm(download[:filename])
+      image =  MiniMagick::Image.open(params[:url])#download[:filename])
+      # FileUtils.rm(download[:filename])
     rescue Exception => e
       render json: { message: "Fail to open image", backtrace: e.backtrace}, status: 500
       return
@@ -54,6 +54,10 @@ class ThumbnailsController < ApplicationController
     end
   end
 
+  def is_alive
+    render json: { message: "Hello, I'm fine"}, status: 200 
+  end
+
 
   private
   def get_ipad_ratio original, wanted
@@ -68,15 +72,15 @@ class ThumbnailsController < ApplicationController
   end
 
 # TODO maybe give the filename
-  def download_file url
-    begin
-      filename = get_random_string + ".photo"
-      open(url) { |f| File.open(filename ,"wb") { |file| file.puts f.read } }
-      {filename: filename}
-    rescue Exception => e
-      {exception: e}
-    end
-  end
+  # def download_file url
+  #   begin
+  #     filename = get_random_string + ".photo"
+  #     open(url) { |f| File.open(filename ,"wb") { |file| file.puts f.read } }
+  #     {filename: filename}
+  #   rescue Exception => e
+  #     {exception: e}
+  #   end
+  # end
 
   def get_random_string
     "#{[*('a'..'z')].sample(12).join}#{Time.new.to_i.to_s}"
