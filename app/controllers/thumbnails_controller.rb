@@ -1,6 +1,4 @@
-# require "open-uri"
 require 'mini_magick'
-# require 'fileutils'
 
 class ThumbnailsController < ApplicationController
   BACKGROUND_COLOR = 'black'
@@ -14,7 +12,13 @@ class ThumbnailsController < ApplicationController
     return render json: {message: validation_ans}, status: 400 if validation_ans
 
     begin
-      image =  MiniMagick::Image.open(params[:url])#download[:filename])
+      image =  MiniMagick::Image.open(params[:url])
+    rescue SocketError, URI::InvalidURIError => e
+      render json: { message: "Url not found : #{e.message}", backtrace: e.backtrace}, status: 500
+      return
+    rescue MiniMagick::Invalid => e
+      render json: { message: "Url is not an image", backtrace: e.backtrace}, status: 500
+      return
     rescue Exception => e
       render json: { message: "Fail to open image", backtrace: e.backtrace}, status: 500
       return
@@ -52,6 +56,7 @@ class ThumbnailsController < ApplicationController
 
 
   private
+
   def get_ipad_ratio original, wanted
     return 1 if wanted.to_i > original
     return wanted.to_f / original.to_f
